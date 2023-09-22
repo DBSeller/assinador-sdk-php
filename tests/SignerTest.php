@@ -1,0 +1,47 @@
+<?php
+
+use Dbseller\AssinadorSdkPhp\Signer;
+use Dbseller\AssinadorSdkPhp\Validation;
+
+$signer = new Signer("http://teela.rs.dbseller.com.br:8095/");
+
+it("CONNECTING TO THE SERVER", function () use ($signer) {
+    $response = $signer->checkConnection();
+    expect($response->getBody()->getContents())->toBe("ASSINADOR E-CIDADE");
+});
+
+it("VALIDATE PATH FILE", function () use ($signer) {
+    $signer->signer();
+})->throws(Exception::class, "filepath inválido!");
+
+it("VALIDATE FILE IS PDF", function () use ($signer) {
+    $signer->setFilePath("tmp/CarlosHenrique-00307194027.pfx");
+    $signer->signer();
+})->throws(Exception::class, "filepath ext inválido!");
+
+it("VALIDATE PATH PFX", function () use ($signer) {
+    $signer->setFilePath("tmp/doc-modelo.pdf")
+        ->signer();
+})->throws(Exception::class, "filePathPFX inválido!");
+
+it("VALIDATE FILE IS PFX", function () use ($signer) {
+    $signer->setFilePath("tmp/doc-modelo.pdf")
+        ->setFilePathPFX("tmp/doc-modelo.pdf")
+        ->signer();
+})->throws(Exception::class, "filePathPFX  ext inválido!");
+
+it("VALIDATE CPF/CNPJ", function () use ($signer) {
+    $signer->setFilePath("tmp/doc-modelo.pdf")
+        ->setFilePathPFX("tmp/CarlosHenrique-00307194027.pfx")
+        ->setCpfCnpj("12312")
+        ->signer();
+})->throws(Exception::class, "CPF/CNPJ inválido!");
+
+it("SIGNER PDF", function () use ($signer) {
+    $resp = $signer->setFilePath("tmp/doc-modelo.pdf")
+        ->setFilePathPFX("tmp/CarlosHenrique-00307194027.pfx")
+        ->setCpfCnpj("00307194027")
+        ->signer();
+    expect(Validation::isValid64base($resp))->toBeTrue();
+});
+
