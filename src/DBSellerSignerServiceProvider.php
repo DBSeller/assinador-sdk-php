@@ -15,8 +15,12 @@ class DBSellerSignerServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . 'config.php' => config_path('dbsellersigner.php'),
-        ]);
+            __DIR__ . '/config.php' => config_path('dbsellersigner.php'),
+        ], 'dbseller-signer-config');
+
+        $this->publishes([
+            __DIR__ . '/DBSellerSignerServiceProvider.php' => app_path('Providers/DBSellerSignerServiceProvider.php'),
+        ], 'dbseller-signer-provider');
     }
 
     /**
