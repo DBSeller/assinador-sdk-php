@@ -15,6 +15,7 @@
     "pestphp/pest": "^1.23"
   },
   "config": {
+    "sort-packages": true,
     "allow-plugins": {
       "pestphp/pest-plugin": true
     }
