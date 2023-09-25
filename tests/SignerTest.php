@@ -3,7 +3,14 @@
 use Dbseller\AssinadorSdkPhp\Signer;
 use Dbseller\AssinadorSdkPhp\Validation;
 
-$signer = new Signer("http://teela.rs.dbseller.com.br:8095/");
+require_once "src/helpers.php";
+$config = include "src/config.php";
+
+$signer = new Signer(
+    $config["signer"]["url"],
+    $config["signer"]["user"],
+    $config["signer"]["password"]
+);
 
 it("CONNECTING TO THE SERVER", function () use ($signer) {
     $response = $signer->checkConnection();
@@ -15,7 +22,7 @@ it("VALIDATE PATH FILE", function () use ($signer) {
 })->throws(Exception::class, "filepath inválido!");
 
 it("VALIDATE FILE IS PDF", function () use ($signer) {
-    $signer->setFilePath("tmp/CarlosHenrique-00307194027.pfx");
+    $signer->setFilePath("tmp/CarlosHenrique-49950051029.pfx");
     $signer->signer();
 })->throws(Exception::class, "filepath ext inválido!");
 
@@ -32,15 +39,15 @@ it("VALIDATE FILE IS PFX", function () use ($signer) {
 
 it("VALIDATE CPF/CNPJ", function () use ($signer) {
     $signer->setFilePath("tmp/doc-modelo.pdf")
-        ->setFilePathPFX("tmp/CarlosHenrique-00307194027.pfx")
+        ->setFilePathPFX("tmp/CarlosHenrique-49950051029.pfx")
         ->setCpfCnpj("12312")
         ->signer();
 })->throws(Exception::class, "CPF/CNPJ inválido!");
 
 it("SIGNER PDF", function () use ($signer) {
     $resp = $signer->setFilePath("tmp/doc-modelo.pdf")
-        ->setFilePathPFX("tmp/CarlosHenrique-00307194027.pfx")
-        ->setCpfCnpj("00307194027")
+        ->setFilePathPFX("tmp/CarlosHenrique-49950051029.pfx")
+        ->setCpfCnpj("49950051029")
         ->signer();
     expect(Validation::isValid64base($resp))->toBeTrue();
 });

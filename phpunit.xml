@@ -4,6 +4,14 @@
          bootstrap="vendor/autoload.php"
          colors="true"
 >
+    <php>
+        <env name="SIGNER_CERTIFICATE_URL" value=""/>
+        <env name="SIGNER_CERTIFICATE_USER" value=""/>
+        <env name="SIGNER_CERTIFICATE_PASSWORD" value=""/>
+        <env name="SIGNER_URL" value=""/>
+        <env name="SIGNER_USER" value=""/>
+        <env name="SIGNER_PASSWORD" value=""/>
+    </php>
     <testsuites>
         <testsuite name="Test Suite">
             <directory suffix="Test.php">./tests</directory>

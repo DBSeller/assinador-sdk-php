@@ -2,7 +2,14 @@
 
 use Dbseller\AssinadorSdkPhp\Certificate;
 
-$certificate = new Certificate("http://localhost:8888");
+require_once "src/helpers.php";
+$config = include "src/config.php";
+
+$certificate = new Certificate(
+    $config["certificate"]["url"],
+    $config["certificate"]["user"],
+    $config["certificate"]["password"]
+);
 
 it("CONNECTING TO THE SERVER", function () use ($certificate) {
     $resp = $certificate->checkConnection();
@@ -21,7 +28,7 @@ it("GENERATE PFX CERTIFICATE VALIDATE CPF/CNPJ", function () use ($certificate) 
 
 
 it("GENERATE CERTIFICATE PFX", function () use ($certificate) {
-    $resp = $certificate->setCpfCnpj("00307194027")
+    $resp = $certificate->setCpfCnpj("49950051029")
         ->generate();
     expect($resp)->toBeString();
 });

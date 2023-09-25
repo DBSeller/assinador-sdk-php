@@ -1,27 +1,35 @@
 {
-    "name": "dbseller/assinador-sdk-php",
-    "autoload": {
-        "psr-4": {
-            "Dbseller\\AssinadorSdkPhp\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Adereldo Oliveira",
-            "email": "oliveiracienciacomputacao@gmail.com"
-        }
-    ],
-    "require-dev": {
-        "pestphp/pest": "^1.23"
-    },
-    "config": {
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
-        }
-    },
-    "require": {
-        "guzzlehttp/guzzle": "^7.8",
-        "ext-iconv": "*",
-        "ext-json": "*"
+  "name": "dbseller/assinador-sdk-php",
+  "autoload": {
+    "psr-4": {
+      "Dbseller\\AssinadorSdkPhp\\": "src/"
     }
+  },
+  "authors": [
+    {
+      "name": "Adereldo Oliveira",
+      "email": "oliveiracienciacomputacao@gmail.com"
+    }
+  ],
+  "require-dev": {
+    "pestphp/pest": "^1.23"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  },
+  "require": {
+    "guzzlehttp/guzzle": "^7.8",
+    "ext-iconv": "*",
+    "ext-json": "*"
+  },
+  "extra": {
+    "laravel": {
+      "dont-discover": [],
+      "providers": [
+        "Dbseller\\AssinadorSdkPhp\\DBSellerSignerServiceProvider"
+      ]
+    }
+  }
 }
