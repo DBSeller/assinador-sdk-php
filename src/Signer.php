@@ -222,14 +222,6 @@ class Signer implements Api
             ];
         }
 
-
-        if (!empty($this->getQrcodeLink())) {
-            $params[] = [
-                'name' => 'qrcodeLink',
-                'contents' => $this->getQrcodeLink()
-            ];
-        }
-
         if (!empty($this->getQrcodeHash())) {
             $params[] = [
                 'name' => 'qrcodeHash',
