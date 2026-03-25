@@ -65,7 +65,34 @@ class Certificate implements Api
 
     public function setName(string $name): self
     {
-        $this->name = $name;
+        $normalized = trim($name);
+
+        $normalized = strtr($normalized, [
+            '@' => 'a',
+            '4' => 'a',
+            '3' => 'e',
+            '1' => 'i',
+            '!' => 'i',
+            '|' => 'i',
+            '0' => 'o',
+            '5' => 's',
+            '$' => 's',
+            '7' => 't',
+            '8' => 'b',
+            '&' => 'e',
+        ]);
+
+        $ascii = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $normalized);
+        if ($ascii !== false) {
+            $normalized = $ascii;
+        }
+
+        $normalized = str_replace(['/', '\\'], ' ', $normalized);
+
+        $normalized = preg_replace('/[^A-Za-z0-9\s]/', '', $normalized);
+        $normalized = preg_replace('/\s+/', ' ', $normalized);
+
+        $this->name = trim($normalized);
         return $this;
     }
 

@@ -7,7 +7,19 @@ require_once "src/helpers.php";
 
 $config = include "src/config.php";
 
+function skipWhenDbsellerSignerConfigMissing(array $config, $testCase): void
+{
+    if (empty($config["signer"]["url"])) {
+        $testCase->markTestSkipped("Configure SIGNER_URL para testes de integracao.");
+    }
+
+    if (empty($config["certificate"]["url"])) {
+        $testCase->markTestSkipped("Configure SIGNER_CERTIFICATE_URL para testes de integracao.");
+    }
+}
+
 it("VALIDATE CONFIG CERTIFICATE", function () use ($config) {
+    skipWhenDbsellerSignerConfigMissing($config, $this);
     $dbsellerSigner = new DBSellerSigner($config);
     $certificate = $dbsellerSigner->certificate();
     expect($certificate)->toBeInstanceOf(\Dbseller\AssinadorSdkPhp\Certificate::class);
@@ -15,6 +27,7 @@ it("VALIDATE CONFIG CERTIFICATE", function () use ($config) {
 
 
 it("VALIDATE GENERATE CERTIFICATE", function () use ($config) {
+    skipWhenDbsellerSignerConfigMissing($config, $this);
 
     $dbsellerSigner = new DBSellerSigner($config);
 
@@ -27,6 +40,7 @@ it("VALIDATE GENERATE CERTIFICATE", function () use ($config) {
 });
 
 it("VALIDATE DOWNLOAD CERTIFICATE", function () use ($config) {
+    skipWhenDbsellerSignerConfigMissing($config, $this);
 
     $dbsellerSigner = new DBSellerSigner($config);
     $certificate = $dbsellerSigner->certificate()
@@ -40,12 +54,14 @@ it("VALIDATE DOWNLOAD CERTIFICATE", function () use ($config) {
 });
 
 it("VALIDATE CONFIG SIGNER", function () use ($config) {
+    skipWhenDbsellerSignerConfigMissing($config, $this);
     $dbsellerSigner = new DBSellerSigner($config);
     $signer = $dbsellerSigner->signer();
     expect($signer)->toBeInstanceOf(Signer::class);
 });
 
 it("SIGNER FILE", function () use ($config) {
+    skipWhenDbsellerSignerConfigMissing($config, $this);
     $dbsellerSigner = new DBSellerSigner($config);
     $signer = $dbsellerSigner->signer()
         ->setFilePathPFX("tmp/CarlosHenrique-49950051029.pfx")
